@@ -134,6 +134,22 @@ cn -p "Update documentation based on recent code changes"
 - Use any model configured in your `config.yaml`
 - Access Continue Mission Control models and configurations
 
+## CLI Options
+
+### Verbose Mode
+
+Use `--verbose` to display cost and usage information during CLI execution:
+
+```bash
+cn --verbose
+```
+
+In verbose mode, Continue CLI displays:
+- **Live session cost** in the bottom status bar (TUI mode)
+- **Detailed usage summary** on exit showing total cost, token usage, and cache metrics
+
+Useful for tracking API costs and understanding resource usage during development.
+
 ## Continue Mission Control Integration
 
 Continue CLI integrates seamlessly with [Continue Mission Control](https://hub.continue.dev) for:
