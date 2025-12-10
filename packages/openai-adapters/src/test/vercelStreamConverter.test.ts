@@ -279,7 +279,8 @@ describe("convertVercelStream", () => {
       for await (const chunk of convertVercelStream(streamParts(), options)) {
         chunks.push(chunk);
       }
-      expect.fail("Should have thrown error");
+      // If we get here without throwing, the test should fail
+      throw new Error("Expected stream to throw error but it didn't");
     } catch (error: any) {
       expect(error.message).toBe("Stream error");
       expect(chunks).toHaveLength(1); // Only the first chunk before error
