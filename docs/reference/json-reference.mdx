@@ -463,9 +463,89 @@ config.json
 }
 ```
 
+## `tools`
+
+Customize built-in tool descriptions and behavior at the repository level. This is particularly useful in `.continuerc.json` for standardizing tool usage across a team.
+
+**Properties:**
+
+Each tool override object can include:
+
+- `name` (**required**): Tool name to override (e.g., `"read_file"`, `"run_terminal_command"`, `"multi_edit"`)
+- `description`: Override the tool's description shown to the LLM
+- `displayTitle`: Override the display name shown in the UI
+- `wouldLikeTo`: Override the action phrase for pending state (e.g., "read {{{ filepath }}}")
+- `isCurrently`: Override the action phrase for in-progress state
+- `hasAlready`: Override the action phrase for completed state
+- `systemMessageDescription`: Override system message format for non-native tool calling
+  - `prefix`: Description prefix
+  - `exampleArgs`: Array of example argument tuples
+- `disabled`: Set to `true` to completely disable this tool
+
+<Warning>
+  Tool overrides only apply to built-in tools. Referencing non-existent tool names will generate a non-fatal warning.
+</Warning>
+
+<Tabs>
+  <Tab title="Basic Override">
+    ```json title=".continuerc.json"
+    {
+      "mergeBehavior": "merge",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read file contents. Always use relative paths from the workspace root."
+        }
+      ]
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Multiple Overrides">
+    ```json title=".continuerc.json"
+    {
+      "mergeBehavior": "merge",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read file contents. Use relative paths from workspace root.",
+          "displayTitle": "Read File"
+        },
+        {
+          "name": "multi_edit",
+          "description": "Edit files. Use the same path format you used to read the file."
+        }
+      ]
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Disable Tool">
+    ```json title=".continuerc.json"
+    {
+      "mergeBehavior": "merge",
+      "tools": [
+        {
+          "name": "run_terminal_command",
+          "disabled": true
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
 ## `userToken`
 
 An optional token that identifies the user, primarily for authenticated services.
+
+Example:
+
+```json
+{
+  "userToken": "your-token-here"
+}
+```
 
 ## `systemMessage`
 

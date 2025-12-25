@@ -44,7 +44,7 @@ See the full reference for `config.yaml` [here](/reference).
 
 The format of `.continuerc.json` is the same as `config.json`, plus one _additional_ property `mergeBehavior`, which can be set to either "merge" or "overwrite". If set to "merge" (the default), `.continuerc.json` will be applied on top of `config.json` (arrays and objects are merged). If set to "overwrite", then every top-level property of `.continuerc.json` will overwrite that property from `config.json`.
 
-Example
+#### Basic Example
 
 ```json title=".continuerc.json"
 {
@@ -54,6 +54,61 @@ Example
   "mergeBehavior": "overwrite"
 }
 ```
+
+#### Customizing Tool Prompts
+
+You can customize built-in tool descriptions and behavior at the repository level using the `tools` array:
+
+<AccordionGroup>
+  <Accordion title="Override tool descriptions">
+    ```json title=".continuerc.json"
+    {
+      "mergeBehavior": "merge",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read file contents. Use relative paths from workspace root."
+        },
+        {
+          "name": "multi_edit",
+          "description": "Edit files. Use the same path format you used to read the file."
+        }
+      ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Disable specific tools">
+    ```json title=".continuerc.json"
+    {
+      "mergeBehavior": "merge",
+      "tools": [
+        {
+          "name": "run_terminal_command",
+          "disabled": true
+        }
+      ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Available tool override properties">
+    Each tool override can include:
+    
+    - `name` **(required)** - Tool name to override (e.g., `"read_file"`, `"run_terminal_command"`)
+    - `description` - Override the tool's description shown to the LLM
+    - `displayTitle` - Override the display name shown in the UI
+    - `wouldLikeTo` / `isCurrently` / `hasAlready` - Override action status messages
+    - `systemMessageDescription` - Override system message format for non-native tool calling
+      - `prefix` - Description prefix
+      - `exampleArgs` - Example arguments array
+    - `disabled` - Set to `true` to completely disable the tool
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Tool overrides only work with built-in tools. They are applied when the config is loaded and merged by name.
+</Note>
 
 ### How to Use `config.ts` for Advanced Configuration
 
